@@ -56,7 +56,7 @@ def visualize_data(datos_clientes: str = "data/raw/datos_clientes.csv",
     plt.figure(figsize=(8, 6))
     sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f")
     plt.title('Matriz de correlaciones - Clientes')
-    plt.savefig(output_dir / "matriz_correlacion.png")
+    plt.savefig(output_dir / "matriz_correlacion_clientes.png")
     plt.close()
 
     num_df = df_resenas.select_dtypes(include=['float64', 'int64'])
