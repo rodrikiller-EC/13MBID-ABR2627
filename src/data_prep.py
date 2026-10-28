@@ -2,8 +2,8 @@ import pandas as pd
 from pathlib import Path
 
 def process_data(
-        datos_clientes: str = "daa/raw/datos_clientes.csv",
-        datos_resenas: str = "daa/raw/datos_resenas.csv",
+        datos_clientes: str = "data/raw/datos_clientes.csv",
+        datos_resenas: str = "data/raw/datos_resenas.csv",
         output_dir: str = "daa/processed",
     )-> None:
     """
@@ -18,8 +18,8 @@ def process_data(
     """
 
     # Lectura de los datos
-    df_clientes = pd.read_csv("../data/raw/datos_clientes.csv", sep=";")
-    df_resenas = pd.read_csv("../data/raw/datos_resenas.csv", sep=";")
+    df_clientes = pd.read_csv(datos_clientes, sep=";")
+    df_resenas = pd.read_csv(datos_resenas, sep=";")
 
     #############################################################################
     # Selección de los datos (filtro de columnas)
