@@ -4,7 +4,7 @@ from pathlib import Path
 def process_data(
         datos_clientes: str = "data/raw/datos_clientes.csv",
         datos_resenas: str = "data/raw/datos_resenas.csv",
-        output_dir: str = "daa/processed",
+        output_dir: str = "data/processed",
     )-> None:
     """
     Función para procesar los datos de clientes y reseñas, y guardar los resultados en un directorio de salida.
