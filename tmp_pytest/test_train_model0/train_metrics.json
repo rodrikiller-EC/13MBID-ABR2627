@@ -1,0 +1,8 @@
+{
+  "test_accuracy": 0.8632718524458701,
+  "test_precision_macro": 0.8195438717904757,
+  "test_recall_macro": 0.8309766805279012,
+  "test_ft_macro": 0.8246901574275959,
+  "test_recall_negative": 0.8309766805279012,
+  "test_roc_aux_ovr": 0.9421837688489516
+}

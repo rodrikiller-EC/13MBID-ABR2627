@@ -41,5 +41,18 @@ stages:
     metrics:  
       - metrics/train_metrics.json
 
+  test_model:
+    #cmd: pytest --html=docs/reporte_pruebas_modelo.html --self-contained-html test/test_train.py -v || true
+    cmd: python -m pytest --html=docs/reporte_pruebas_modelo.html --self-contained-html test/test_train.py -v
+    deps:
+      - test/test_train.py
+      - metrics/train_metrics.json
+      - data/processed/datos_integrados.csv
+    outs:
+      - docs/reporte_pruebas_modelo.html
+    
+
+
+
       
 
