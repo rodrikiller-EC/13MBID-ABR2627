@@ -8,8 +8,10 @@ import joblib
 
 from contextlib import asynccontextmanager
 from src.data_prep import create_attributes
+from train_model import ALIAS_PRODUCCION, REGISTERED_MODEL_NAME
 
 MODEL_PATH = os.getenv("MODEL_PATH", "models/trained_model.pkl")
+MODEL_URI = os.getenv("MODEL_URI", "models:/sentimiento-resenas@champion")
 
 #Definimos lops dominios de los atributos de entrada
 CATEGORIAS = Literal["Alimentos", "Belleza", "Calzado", "Deportes", 
@@ -47,6 +49,22 @@ class PredictionResponse(BaseModel):
     probabilidad: dict[str, float] 
 
 modelo = {}
+
+def cargar_modelo():
+    """Carga el modelo entrenado desde el archivo especificado en MODEL_PATH"""
+    if os.path.exists(MODEL_PATH):
+        modelo["pipeline"] = joblib.load(MODEL_PATH)
+        modelo["origen"] = MODEL_PATH
+        return modelo
+    if os.getenv("MLFLOW_TRACKING_URI"):
+        import mlflow.sklearn
+        try:
+            modelo["pipeline"] = mlflow.sklearn.load_model(MODEL_URI)
+            modelo["origen"] = "MODEL_URI"
+        except Exception as e:
+            print(f"Error al cargar el modelo desde {MODEL_URI}: {e}")    
+
+    
 
 @asynccontextmanager
 async def lifespam(app: FastAPI):
