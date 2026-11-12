@@ -66,20 +66,20 @@ stages:
       size: 4465568
     - path: src/data_prep.py
       hash: md5
-      md5: f27d6eeebce1d1ccbc90db7da54bc5ea
-      size: 5264
+      md5: 4ec9f1bfbb79698bfd2251ffb5e69172
+      size: 5532
     outs:
     - path: data/processed/datos_integrados.csv
       hash: md5
-      md5: 652ffd255e046eaaf109c50fa23064b4
-      size: 5207585
+      md5: 23b9eadcd0358d1c05ba49fedaa1fd5a
+      size: 4626791
   train_model:
     cmd: python src/train_model.py
     deps:
     - path: data/processed/datos_integrados.csv
       hash: md5
-      md5: 652ffd255e046eaaf109c50fa23064b4
-      size: 5207585
+      md5: 23b9eadcd0358d1c05ba49fedaa1fd5a
+      size: 4626791
     - path: src/train_model.py
       hash: md5
       md5: 40277230a503abb2d36daf6f3e49467f
@@ -87,31 +87,31 @@ stages:
     outs:
     - path: docs/figures/confusion_matrix_test.png
       hash: md5
-      md5: 18aceb4d6e49935c6fed4e7e2fefa4e9
-      size: 26778
+      md5: ed5ad41bc3a2040493bcfaa7d8a148d1
+      size: 27039
     - path: metrics/train_metrics.json
       hash: md5
-      md5: e3eb84cf803a4bf57c77d056d87e5cfd
+      md5: fad0502a8360948d253678007f3a5e65
       size: 264
     - path: models/preprocessor.pkl
       hash: md5
-      md5: 837ce19c73eada9543f6802cf1adaa3b
-      size: 360726
+      md5: b2ec7f28eef84663dbaa6c763a984ed9
+      size: 360438
     - path: models/trained_model.pkl
       hash: md5
-      md5: 4678bdcda13269156e44296702bb78e8
-      size: 438385
+      md5: 6d71440794635bb2c107a8013d17cb96
+      size: 438049
   test_model:
     cmd: python -m pytest --html=docs/reporte_pruebas_modelo.html 
       --self-contained-html test/test_train.py -v
     deps:
     - path: data/processed/datos_integrados.csv
       hash: md5
-      md5: 652ffd255e046eaaf109c50fa23064b4
-      size: 5207585
+      md5: 23b9eadcd0358d1c05ba49fedaa1fd5a
+      size: 4626791
     - path: metrics/train_metrics.json
       hash: md5
-      md5: e3eb84cf803a4bf57c77d056d87e5cfd
+      md5: fad0502a8360948d253678007f3a5e65
       size: 264
     - path: test/test_train.py
       hash: md5
@@ -120,5 +120,5 @@ stages:
     outs:
     - path: docs/reporte_pruebas_modelo.html
       hash: md5
-      md5: d89ae29442204b9532dd7555180be0e5
-      size: 37898
+      md5: 34e12f6f7a6dcd36e5e24222a7bb056e
+      size: 37838
