@@ -8,7 +8,6 @@ import joblib
 
 from contextlib import asynccontextmanager
 from src.data_prep import create_attributes
-from train_model import ALIAS_PRODUCCION, REGISTERED_MODEL_NAME
 
 MODEL_PATH = os.getenv("MODEL_PATH", "models/trained_model.pkl")
 MODEL_URI = os.getenv("MODEL_URI", "models:/sentimiento-resenas@champion")
@@ -68,9 +67,9 @@ def cargar_modelo():
 
 @asynccontextmanager
 async def lifespam(app: FastAPI):
-    #Cargar el modelo entrenado y el preprocesador al iniciar la aplicación
-    if os.path.exists(MODEL_PATH):
-        modelo["pipeline"] = joblib.load(MODEL_PATH)
+    #Cargar el modelo: primero el .pkl local y, si no existe, desde el registro de MLflow (DagsHub)
+    cargar_modelo()
+    print(f"Modelo cargado: {'pipeline' in modelo} - origen: {modelo.get('origen')}")
     yield
     modelo.clear()  
 
