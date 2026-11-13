@@ -43,6 +43,11 @@ from sklearn.metrics import (
 warnings.filterwarnings('ignore',category=FutureWarning)
 warnings.filterwarnings('ignore',category=UserWarning)
 
+REGISTERED_MODEL_NAME = "sentimiento-resenas"
+ALIAS_PRODUCCION = "champion"
+UMBRAL_ACCURACY = 0.8
+
+
 def load_data(data_path: str = "data/processed/datos_integrados.csv"):
     """
     Carga los datos desde un archivo CSV y devuelve un DataFrame de pandas.
@@ -122,6 +127,7 @@ def train_model(
     preprocessor_output_path: str = "models/preprocessor.pkl",
     metrics_output_path: str = "metrics/train_metrics.json",
     figures_output_path: str = "docs/figures",
+    register_model_name: str | None = REGISTERED_MODEL_NAME,
 ):
 
     """
@@ -198,13 +204,20 @@ def train_model(
 
         mlflow.log_metrics(metrics)
         mlflow.log_artifact(cm_fig_path, artifact_path="figures")
-        mlflow.sklearn.log_model(pipeline, name="model", 
-                                 signature=signature, 
-                                 input_example=X_train.head(3),
-                                 registered_model_name="sentimiento-resenas")
+        model_info = mlflow.sklearn.log_model(
+            pipeline, name="model", signature=signature, input_example=X_train.head(3),
+            registered_model_name=register_model_name,
+        )
 
         run_id = mlflow.active_run().info.run_id
         print(f"Modelo registrado en MLflow a raíz del run ID: {run_id}")
+
+    if register_model_name:
+        version = getattr(model_info.registered_model_version, "version", model_info.registered_model_version)
+        if metrics["test_accuracy"] >= UMBRAL_ACCURACY:
+            mlflow.MlflowClient().set_registered_model_alias(
+                name=register_model_name, version=version, alias=ALIAS_PRODUCCION
+            )
 
     Path(model_output_path).parent.mkdir(parents=True, exist_ok=True)
     Path(preprocessor_output_path).parent.mkdir(parents=True, exist_ok=True)
