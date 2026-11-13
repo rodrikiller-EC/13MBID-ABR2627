@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 import streamlit as st
 
-API_URL = os.getenv("API_URL", "http://localhost:8000")
+API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
 
 COLORES = {"Positivo": "🟢", "Neutral": "🟡", "Negativo": "🔴"}
 
@@ -29,7 +29,7 @@ def obtener_opciones():
         return response.json()
     except requests.exceptions.RequestException as e:
         st.error(f"Error al obtener las opciones de la API: {e}")
-        return {"categorias_producto": [], "ciudades": []}
+        st.stop()
 
 try:
     opciones = obtener_opciones()
